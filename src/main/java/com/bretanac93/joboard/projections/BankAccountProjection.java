@@ -48,7 +48,7 @@ public class BankAccountProjection {
             throw new AccountNotFoundException(event.getAccountId());
         }
         BankAccount bankAccount = optionalBankAccount.get();
-        bankAccount.setBalance(bankAccount.getBalance().add(event.getDebitAmount()));
+        bankAccount.setBalance(bankAccount.getBalance().subtract(event.getDebitAmount()));
         this.repository.save(bankAccount);
     }
 
