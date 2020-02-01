@@ -58,6 +58,7 @@ public class BankAccountAggregate {
         this.balance = this.balance.add(event.getCreditAmount());
     }
 
+    @CommandHandler
     public void handle(DebitMoneyCommand command) {
         AggregateLifecycle.apply(new MoneyDebitedEvent(
                 command.getAccountId(),
@@ -65,6 +66,7 @@ public class BankAccountAggregate {
         ));
     }
 
+    @EventSourcingHandler
     public void on(MoneyDebitedEvent event) throws InsufficientFundsException {
         if (this.balance.compareTo(event.getDebitAmount()) < 0) {
             throw new InsufficientFundsException(event.getAccountId(), event.getDebitAmount());
